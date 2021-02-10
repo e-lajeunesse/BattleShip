@@ -8,5 +8,7 @@ namespace BattleShip
     {
         public int coordinateX { get; set; }
         public int coordinateY { get; set; }
+
+        public bool HasSunk { get; set; }
     }
 }
