@@ -11,6 +11,7 @@ namespace BattleShip
         public Point[,] board = new Point[10, 10];
 
         
+        // Method to initialize board with points
         // needed separate method since everytime you use DisplayBoard it would change all points back to '.'
         public void FillBoard()
         {
@@ -25,10 +26,9 @@ namespace BattleShip
         }
 
 
+        //Method to display board to console
         public void DisplayBoard()
-        {
-
-            
+        {            
             Console.WriteLine(letters);
             for (int i = 0; i < board.GetLength(0); i++)
             {
@@ -37,14 +37,14 @@ namespace BattleShip
                 Console.ForegroundColor = ConsoleColor.Blue;
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    /*if(board[i,j].HasShip && !board[i,j].HideShip)
-                    {
-                        board[i, j].DisplayString = " S ";
-                    }*/
-                     
+
                     if( board[i,j].DisplayString == " M ")
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    else if (board[i, j].DisplayString == " H ")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
                     }
                     Console.Write($"{board[i, j].DisplayString}");
                     Console.ForegroundColor = ConsoleColor.Blue;

@@ -13,6 +13,7 @@ namespace BattleShip
         public Ship shipTwo { get; }
 
 
+        // Method for player to place ships on their own board
         public void PlaceShip(Ship playerShip, Board playerBoard)
         {
 
@@ -33,18 +34,14 @@ namespace BattleShip
 
                     playerBoard.board[coordinates[0], coordinates[1]].HasShip = true;
                     shipPlacedSuccessfully = true;
-                    Console.WriteLine($"Ship {playerShip} placed at {playerChoice}");
-                    
+                    Console.WriteLine($"Ship {playerShip} placed at {playerChoice}");                    
                 }
             }
-
-
         }
 
+        // Method for player to fire on opponents board
         public void Fire(Board playerBoard)
         {
-
-
             bool validFireGuess = false;
             while (!validFireGuess)
             {
@@ -87,6 +84,7 @@ namespace BattleShip
             return coordinates;
         }
 
+        // Checks if a players entry on the game board
         public bool ChoiceOnBoard(string choice)
         {
             List<char> validLetters = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
@@ -107,7 +105,6 @@ namespace BattleShip
             {
                 return true;
             }
-
         }
     }
 }
