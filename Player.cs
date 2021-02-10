@@ -29,14 +29,51 @@ namespace BattleShip
                 else
                 {
                     List<int> coordinates = ConvertChoiceToCoordinate(playerChoice);
-                    playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " S ";
+                    playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " @ ";
+
                     playerBoard.board[coordinates[0], coordinates[1]].HasShip = true;
                     shipPlacedSuccessfully = true;
                     Console.WriteLine($"Ship {playerShip} placed at {playerChoice}");
+                    
                 }
             }
 
 
+        }
+
+        public void Fire(Board playerBoard)
+        {
+
+
+            bool validFireGuess = false;
+            while (!validFireGuess)
+            {
+                Console.WriteLine("Enter the location you want to fire at: ");
+                string playerGuess = Console.ReadLine();
+
+                if (!ChoiceOnBoard(playerGuess))
+                {
+                    Console.WriteLine("Invalid Location");
+                }
+                else
+                {
+                    List<int> coordinates = ConvertChoiceToCoordinate(playerGuess);
+                    if (playerBoard.board[coordinates[0], coordinates[1]].HasShip)
+                    {
+                        Console.WriteLine("You've hit the enemies ship!");
+                        playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " H ";
+                        playerBoard.board[coordinates[0], coordinates[1]].HasShip = false;
+                        Score++;
+                    }
+                    else
+                    {
+                        Console.WriteLine("You Missed!");
+                        playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " M ";
+
+                    }
+                    validFireGuess = true;
+                }
+            }
         }
 
         //Converts players choice to coordinates on board, i.e A1 converts to (1,0)

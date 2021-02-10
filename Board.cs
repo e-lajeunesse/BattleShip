@@ -22,8 +22,9 @@ namespace BattleShip
                     board[i, j].DisplayString = " . ";
                 }
             }
-
         }
+
+
         public void DisplayBoard()
         {
 
@@ -36,11 +37,23 @@ namespace BattleShip
                 Console.ForegroundColor = ConsoleColor.Blue;
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
+                    /*if(board[i,j].HasShip && !board[i,j].HideShip)
+                    {
+                        board[i, j].DisplayString = " S ";
+                    }*/
+                     
+                    if( board[i,j].DisplayString == " M ")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
                     Console.Write($"{board[i, j].DisplayString}");
+                    Console.ForegroundColor = ConsoleColor.Blue;
                 }
                 Console.WriteLine();
             }
         }
+
+        
 
 
 
