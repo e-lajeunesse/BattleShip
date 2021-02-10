@@ -16,10 +16,10 @@ namespace BattleShip
                 Console.WriteLine((int)c);
             }*/
 
-            Player testplayer = new Player();
+/*            Player testplayer = new Player();
             List<int> testOne = testplayer.ConvertChoiceToCoordinate("A2");
             List<int> testTwo = testplayer.ConvertChoiceToCoordinate("E3");
-            List<int> testThree = testplayer.ConvertChoiceToCoordinate("J9");
+            List<int> testThree = testplayer.ConvertChoiceToCoordinate("J9");*/
 
             /*            Console.WriteLine($"A2 : {testOne[0]}{testOne[1]}");
                         Console.WriteLine($"E3 : {testTwo[0]}{testTwo[1]}");

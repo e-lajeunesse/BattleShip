@@ -46,6 +46,11 @@ namespace BattleShip
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                     }
+                    else if (board[i, j].DisplayString == " S ")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                    }
+
                     Console.Write($"{board[i, j].DisplayString}");
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }

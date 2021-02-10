@@ -6,12 +6,12 @@ namespace BattleShip
 {
     public class GameUI
     {
-        private int turnCounter = 2;
+        
         // Game is played by two players. Each player has their own 5x5 board.
         // At the start of the game each player chooses where to place their ships
         // The players take turns guessing where the other player's ships are on their board.
-        private Player playerOne = new Player();
-        private Player playerTwo = new Player();
+        private Player playerOne = new Player("Player 1");
+        private Player playerTwo = new Player("Player 2");
         public void NewGame()
         {
             //Player One places ships
@@ -19,10 +19,24 @@ namespace BattleShip
             DisplayTitle();             
             playerOneBoard.FillBoard();
             playerOneBoard.DisplayBoard();
+            
             playerOne.PlaceShip(playerOne.shipOne, playerOneBoard);     
             DisplayTitle();
             playerOneBoard.DisplayBoard();
+            
             playerOne.PlaceShip(playerOne.shipTwo, playerOneBoard);
+            DisplayTitle();
+            playerOneBoard.DisplayBoard();
+
+            playerOne.PlaceShip(playerOne.shipThree, playerOneBoard);
+            DisplayTitle();
+            playerOneBoard.DisplayBoard();
+
+            playerOne.PlaceShip(playerOne.shipFour, playerOneBoard);
+            DisplayTitle();
+            playerOneBoard.DisplayBoard();
+
+            playerOne.PlaceShip(playerOne.shipFive, playerOneBoard);
             DisplayTitle();
             playerOneBoard.DisplayBoard();
             Console.ReadKey();
@@ -36,19 +50,35 @@ namespace BattleShip
             DisplayTitle();
             playerTwoBoard.FillBoard();
             playerTwoBoard.DisplayBoard();
+            
             playerTwo.PlaceShip(playerTwo.shipOne, playerTwoBoard);
             DisplayTitle();
             playerTwoBoard.DisplayBoard();
+            
             playerTwo.PlaceShip(playerTwo.shipTwo, playerTwoBoard);
             DisplayTitle();
             playerTwoBoard.DisplayBoard();
+
+            playerTwo.PlaceShip(playerTwo.shipThree, playerTwoBoard);
+            DisplayTitle();
+            playerTwoBoard.DisplayBoard();
+
+            playerTwo.PlaceShip(playerTwo.shipFour, playerTwoBoard);
+            DisplayTitle();
+            playerTwoBoard.DisplayBoard();
+
+            playerTwo.PlaceShip(playerTwo.shipFive, playerTwoBoard);
+            DisplayTitle();
+            playerTwoBoard.DisplayBoard();
+
             Console.ReadKey();
             foreach (Point point in playerTwoBoard.board)
             {
                 point.DisplayString = " . ";
             }
 
-            for(int i=0; i<1; i++)
+            // Players take turns firing on opponents board until someone hits all ships or 10 total turns are up
+            for(int i=0; i<5; i++)
             {
                 //Player One fires on Player Two's Board
                 for (int j=0; j<5; j++)
@@ -63,7 +93,14 @@ namespace BattleShip
                 }
                 DisplayTitle();
                 playerTwoBoard.DisplayBoard();
-                Console.WriteLine("Your out of shots");                
+                if(playerOne.Score >= playerTwo.totalShips)
+                {
+                    Console.WriteLine("\n You've hit all the enemies ships!");
+                }
+                else
+                {
+                    Console.WriteLine("\n Your out of shots");                
+                }
                 Console.ReadKey();
 
                 //Player Two fires on Player One's Board
@@ -79,7 +116,14 @@ namespace BattleShip
                 }
                 DisplayTitle();
                 playerOneBoard.DisplayBoard();
-                Console.WriteLine("You're out of shots");                
+                if (playerTwo.Score >= playerOne.totalShips)
+                {
+                    Console.WriteLine("\n You've hit all the enemy ships!");
+                }
+                else
+                {
+                    Console.WriteLine("\n You're out of shots");                
+                }
                 Console.ReadKey();
 
                 if (IsGameOver())
@@ -118,6 +162,7 @@ namespace BattleShip
         public void EndGame()
         {
             DisplayTitle();
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Thank you for playing Battleship!");
             Console.WriteLine("The Winner is: ");
             if (playerOne.Score > playerTwo.Score)

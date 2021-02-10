@@ -6,11 +6,21 @@ namespace BattleShip
 {
     public class Player
     {
-        public int totalShips { get; } = 2;
+        public int totalShips { get; } = 5;
         public int Score { get; set; } = 0;
+
+        public string Name { get;set;}
 
         public Ship shipOne { get; }
         public Ship shipTwo { get; }
+        public Ship shipThree { get; }
+        public Ship shipFour { get; }
+        public Ship shipFive { get; }
+
+        public Player(string name)
+        {
+            Name = name;
+        }
 
 
         // Method for player to place ships on their own board
@@ -21,16 +31,17 @@ namespace BattleShip
 
             while (!shipPlacedSuccessfully)
             {
-                Console.WriteLine("\nEnter where you want to place your ship: ");
+                Console.WriteLine($"\n{Name} Enter where you want to place your ship: ");
                 string playerChoice = Console.ReadLine();
                 if (!ChoiceOnBoard(playerChoice))
                 {
-                    Console.WriteLine("Invalid Entry");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("INVALID ENTRY");
                 }
                 else
                 {
                     List<int> coordinates = ConvertChoiceToCoordinate(playerChoice);
-                    playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " @ ";
+                    playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " S ";
 
                     playerBoard.board[coordinates[0], coordinates[1]].HasShip = true;
                     shipPlacedSuccessfully = true;
@@ -45,12 +56,13 @@ namespace BattleShip
             bool validFireGuess = false;
             while (!validFireGuess)
             {
-                Console.WriteLine("Enter the location you want to fire at: ");
+                Console.WriteLine($"\n {Name} Enter the location you want to fire at: ");
                 string playerGuess = Console.ReadLine();
 
                 if (!ChoiceOnBoard(playerGuess))
                 {
-                    Console.WriteLine("Invalid Location");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("INVALID LOCATION");
                 }
                 else
                 {
