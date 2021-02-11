@@ -81,7 +81,7 @@ namespace BattleShip
             for(int i=0; i<5; i++)
             {
                 //Player One fires on Player Two's Board
-                for (int j=0; j<5; j++)
+                for (int j=0; j<6; j++)
                 {
                     DisplayTitle();
                     playerTwoBoard.DisplayBoard();
@@ -104,7 +104,7 @@ namespace BattleShip
                 Console.ReadKey();
 
                 //Player Two fires on Player One's Board
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < 6; j++)
                 {
                     DisplayTitle();
                     playerOneBoard.DisplayBoard();

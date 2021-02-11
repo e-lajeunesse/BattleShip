@@ -6,7 +6,7 @@ namespace BattleShip
 {
     public class Player
     {
-        public int totalShips { get; } = 5;
+        public int totalShips { get; } = 15;
         public int Score { get; set; } = 0;
         public string Name { get;set;}
 
@@ -30,7 +30,7 @@ namespace BattleShip
             {
                 Console.WriteLine($"\n{Name} Enter where you want to place your ship: ");
                 string playerChoice = Console.ReadLine();
-                if (!ChoiceOnBoard(playerChoice))
+                if (!ShipChoiceOnBoard(playerChoice))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("INVALID ENTRY");
@@ -38,7 +38,9 @@ namespace BattleShip
                 else
                 {
                     List<int> coordinates = ConvertChoiceToCoordinate(playerChoice);
-                    if (playerBoard.board[coordinates[0], coordinates[1]].HasShip)
+                    if (playerBoard.board[coordinates[0], coordinates[1]].HasShip 
+                        || playerBoard.board[coordinates[0], coordinates[1]+1].HasShip
+                        || playerBoard.board[coordinates[0], coordinates[1]+2].HasShip)
                     {
                         Console.WriteLine("There's already a ship there!");
                     }
@@ -46,6 +48,13 @@ namespace BattleShip
                     {
                         playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " S ";
                         playerBoard.board[coordinates[0], coordinates[1]].HasShip = true;
+                        
+                        playerBoard.board[coordinates[0], coordinates[1]+1].DisplayString = " S ";
+                        playerBoard.board[coordinates[0], coordinates[1]+1].HasShip = true;
+
+                        playerBoard.board[coordinates[0], coordinates[1] + 2].DisplayString = " S ";
+                        playerBoard.board[coordinates[0], coordinates[1] + 2].HasShip = true;
+
                         shipPlacedSuccessfully = true;
                         Console.WriteLine($"Ship {playerShip} placed at {playerChoice}");                    
                     }
@@ -105,6 +114,29 @@ namespace BattleShip
         public bool ChoiceOnBoard(string choice)
         {
             List<char> validLetters = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+            List<int> validNums = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            if (choice.Length != 2)
+            {
+                return false;
+            }
+            else if (!validLetters.Contains(choice[0]))
+            {
+                return false;
+            }
+            else if (!validNums.Contains(int.Parse(choice[1].ToString())))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        // Checks if a players entry on the game board
+        public bool ShipChoiceOnBoard(string choice)
+        {
+            List<char> validLetters = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
             List<int> validNums = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             if (choice.Length != 2)
             {
