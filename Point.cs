@@ -8,8 +8,7 @@ namespace BattleShip
     {
         public int row { get; set; }
         public int column { get; set; }
-        public bool HasShip { get; set; }
-        //public bool HideShip { get; set; } = true;
+        public bool HasShip { get; set; }        
         public string DisplayString { get; set; }
     }
 }

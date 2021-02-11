@@ -8,7 +8,6 @@ namespace BattleShip
     {
         public int totalShips { get; } = 5;
         public int Score { get; set; } = 0;
-
         public string Name { get;set;}
 
         public Ship shipOne { get; }
@@ -26,9 +25,7 @@ namespace BattleShip
         // Method for player to place ships on their own board
         public void PlaceShip(Ship playerShip, Board playerBoard)
         {
-
             bool shipPlacedSuccessfully = false;
-
             while (!shipPlacedSuccessfully)
             {
                 Console.WriteLine($"\n{Name} Enter where you want to place your ship: ");
@@ -41,11 +38,17 @@ namespace BattleShip
                 else
                 {
                     List<int> coordinates = ConvertChoiceToCoordinate(playerChoice);
-                    playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " S ";
-
-                    playerBoard.board[coordinates[0], coordinates[1]].HasShip = true;
-                    shipPlacedSuccessfully = true;
-                    Console.WriteLine($"Ship {playerShip} placed at {playerChoice}");                    
+                    if (playerBoard.board[coordinates[0], coordinates[1]].HasShip)
+                    {
+                        Console.WriteLine("There's already a ship there!");
+                    }
+                    else
+                    {
+                        playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " S ";
+                        playerBoard.board[coordinates[0], coordinates[1]].HasShip = true;
+                        shipPlacedSuccessfully = true;
+                        Console.WriteLine($"Ship {playerShip} placed at {playerChoice}");                    
+                    }
                 }
             }
         }
@@ -77,8 +80,10 @@ namespace BattleShip
                     else
                     {
                         Console.WriteLine("You Missed!");
-                        playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " M ";
-
+                        if(!(playerBoard.board[coordinates[0], coordinates[1]].DisplayString == " H "))
+                        {
+                            playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " M ";
+                        }
                     }
                     validFireGuess = true;
                 }

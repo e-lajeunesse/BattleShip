@@ -77,7 +77,7 @@ namespace BattleShip
                 point.DisplayString = " . ";
             }
 
-            // Players take turns firing on opponents board until someone hits all ships or 10 total turns are up
+            // Players take turns firing on opponents board until someone hits all ships or 5 total turns are up
             for(int i=0; i<5; i++)
             {
                 //Player One fires on Player Two's Board
@@ -99,7 +99,7 @@ namespace BattleShip
                 }
                 else
                 {
-                    Console.WriteLine("\n Your out of shots");                
+                    Console.WriteLine("\n You're out of shots");                
                 }
                 Console.ReadKey();
 
@@ -150,6 +150,7 @@ namespace BattleShip
             Console.WriteLine($"  Player 1: {playerOne.Score}      Player 2: {playerTwo.Score}\n\n");
         }
 
+        // Checks if either player has won
         public bool IsGameOver()
         {
             if ( playerOne.Score >= playerTwo.totalShips || playerTwo.Score >= playerOne.totalShips)
@@ -159,6 +160,7 @@ namespace BattleShip
             return false;
         }
 
+        
         public void EndGame()
         {
             DisplayTitle();
@@ -177,6 +179,7 @@ namespace BattleShip
             {
                 Console.WriteLine("The game ends in a tie!");
             }
+            Console.ReadKey();
         }
 
     }
