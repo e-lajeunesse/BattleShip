@@ -19,27 +19,26 @@ namespace BattleShip
             DisplayTitle();             
             playerOneBoard.FillBoard();
             playerOneBoard.DisplayBoard();
-            
-            playerOne.PlaceShip(playerOne.shipOne, playerOneBoard);     
-            DisplayTitle();
-            playerOneBoard.DisplayBoard();
-            
-/*            playerOne.PlaceShip(playerOne.shipTwo, playerOneBoard);
-            DisplayTitle();
-            playerOneBoard.DisplayBoard();
 
-            playerOne.PlaceShip(playerOne.shipThree, playerOneBoard);
-            DisplayTitle();
-            playerOneBoard.DisplayBoard();
-
-            playerOne.PlaceShip(playerOne.shipFour, playerOneBoard);
-            DisplayTitle();
-            playerOneBoard.DisplayBoard();
-
-            playerOne.PlaceShip(playerOne.shipFive, playerOneBoard);
-            DisplayTitle();
-            playerOneBoard.DisplayBoard();*/
-            
+            foreach( Ship playerShip in playerOne.ShipList)
+            {
+                bool validEntry = false;
+                while(!validEntry)
+                {
+                    Console.WriteLine($"How would you like to place your {playerShip.Name}, enter 1 or 2" +
+                        $"1. Horizontally" +
+                        $"2. Vertically");
+                    string direction = Console.ReadLine();
+                    if (direction == "1" || direction == "2")
+                    {
+                        validEntry = true;
+                    }
+                }
+                playerOne.PlaceShip(playerShip, playerOneBoard);     
+                DisplayTitle();
+                playerOneBoard.DisplayBoard();
+            }       
+                                   
             Console.ReadKey();
             foreach (Point point in playerOneBoard.board)
             {
@@ -51,27 +50,14 @@ namespace BattleShip
             DisplayTitle();
             playerTwoBoard.FillBoard();
             playerTwoBoard.DisplayBoard();
-            
-            playerTwo.PlaceShip(playerTwo.shipOne, playerTwoBoard);
-            DisplayTitle();
-            playerTwoBoard.DisplayBoard();
-            
-/*            playerTwo.PlaceShip(playerTwo.shipTwo, playerTwoBoard);
-            DisplayTitle();
-            playerTwoBoard.DisplayBoard();
 
-            playerTwo.PlaceShip(playerTwo.shipThree, playerTwoBoard);
-            DisplayTitle();
-            playerTwoBoard.DisplayBoard();
-
-            playerTwo.PlaceShip(playerTwo.shipFour, playerTwoBoard);
-            DisplayTitle();
-            playerTwoBoard.DisplayBoard();
-
-            playerTwo.PlaceShip(playerTwo.shipFive, playerTwoBoard);
-            DisplayTitle();
-            playerTwoBoard.DisplayBoard();*/
-
+            foreach(Ship playerShip in playerTwo.ShipList)
+            {
+                playerTwo.PlaceShip(playerShip, playerTwoBoard);
+                DisplayTitle();
+                playerTwoBoard.DisplayBoard();
+            }
+                       
             Console.ReadKey();
             foreach (Point point in playerTwoBoard.board)
             {
@@ -196,3 +182,4 @@ namespace BattleShip
 }
 
     
+// To DO: update code so ships can be placed vertically

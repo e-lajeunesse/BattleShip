@@ -6,16 +6,13 @@ namespace BattleShip
 {
     public class Player
     {
-        public int totalShips { get; } = 2;
+        public int totalShips { get; } = 3;
         public int Score { get; set; } = 0;
-        public string Name { get; set; }
+        public string Name { get; }
 
-        public Ship shipOne { get; } = new Ship();
+        public List<Ship> ShipList { get; } = new List<Ship> { new PatrolShip(),new Battleship(),new Carrier() };
         
-        /*        public Ship shipTwo { get; }
-                public Ship shipThree { get; }
-                public Ship shipFour { get; }
-                public Ship shipFive { get; }*/
+
 
         public Player(string name)
         {
@@ -31,9 +28,8 @@ namespace BattleShip
             bool shipPlacedSuccessfully = false;
             while (!shipPlacedSuccessfully)
             {
-                Console.WriteLine($"\n{Name} Enter where you want to place your ship: ");
-                string playerChoice = Console.ReadLine();
-                
+                Console.WriteLine($"\n{Name} Enter where you want to place your {playerShip.Name}: ");
+                string playerChoice = Console.ReadLine();                
 
                 if (!ShipChoiceOnBoard(playerChoice, playerShip.Length))
                 {
@@ -46,7 +42,6 @@ namespace BattleShip
                 {
                     Console.WriteLine("There's already a ship there!");
                 }
-
                 else
                 {
                     for (int i = 0; i < playerShip.Length; i++)
@@ -57,8 +52,7 @@ namespace BattleShip
                         ValueTuple<int, int> shipLocation = (coordinates[0], coordinates[1] + i);
                         playerBoard.ShipTracker[shipLocation] = playerShip;
                     }
-                    shipPlacedSuccessfully = true;
-                    Console.WriteLine($"Ship {playerShip} placed at {playerChoice}");
+                    shipPlacedSuccessfully = true;                    
                 }
             }
         }
@@ -90,14 +84,12 @@ namespace BattleShip
                         if (hitShip.IsSunk(playerBoard))
                         {
                             
-                            result =  "You've sunk the enemies ship!";
-                            
+                            result =  $"You've sunk the enemies {hitShip.Name}!";                            
                             Score++;
                         }
                         else
                         {
-                            result = "You've hit the enemies ship!"; 
-                            
+                            result = $"You've hit the enemies {hitShip.Name}!";                             
                         }                        
                     }
                     else
