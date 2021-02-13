@@ -6,9 +6,19 @@ namespace BattleShip
 {
    public class Ship
     {
-        public int coordinateX { get; set; }
-        public int coordinateY { get; set; }
+        public int Length { get; } = 3;
+        public List<List<int>> Locations { get; set; } = new List<List<int>>();
 
-        public bool HasSunk { get; set; }
+        public bool IsSunk(Board playerBoard)
+        {
+            foreach(List<int> coordinate in Locations)
+            {
+                if (playerBoard.board[coordinate[0] ,coordinate[1]].HasShip)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

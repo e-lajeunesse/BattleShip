@@ -24,7 +24,7 @@ namespace BattleShip
             DisplayTitle();
             playerOneBoard.DisplayBoard();
             
-            playerOne.PlaceShip(playerOne.shipTwo, playerOneBoard);
+/*            playerOne.PlaceShip(playerOne.shipTwo, playerOneBoard);
             DisplayTitle();
             playerOneBoard.DisplayBoard();
 
@@ -38,7 +38,8 @@ namespace BattleShip
 
             playerOne.PlaceShip(playerOne.shipFive, playerOneBoard);
             DisplayTitle();
-            playerOneBoard.DisplayBoard();
+            playerOneBoard.DisplayBoard();*/
+            
             Console.ReadKey();
             foreach (Point point in playerOneBoard.board)
             {
@@ -55,7 +56,7 @@ namespace BattleShip
             DisplayTitle();
             playerTwoBoard.DisplayBoard();
             
-            playerTwo.PlaceShip(playerTwo.shipTwo, playerTwoBoard);
+/*            playerTwo.PlaceShip(playerTwo.shipTwo, playerTwoBoard);
             DisplayTitle();
             playerTwoBoard.DisplayBoard();
 
@@ -69,7 +70,7 @@ namespace BattleShip
 
             playerTwo.PlaceShip(playerTwo.shipFive, playerTwoBoard);
             DisplayTitle();
-            playerTwoBoard.DisplayBoard();
+            playerTwoBoard.DisplayBoard();*/
 
             Console.ReadKey();
             foreach (Point point in playerTwoBoard.board)
@@ -85,7 +86,11 @@ namespace BattleShip
                 {
                     DisplayTitle();
                     playerTwoBoard.DisplayBoard();
-                    playerOne.Fire(playerTwoBoard);
+                    string result = playerOne.Fire(playerTwoBoard);
+                    DisplayTitle();
+                    playerTwoBoard.DisplayBoard();
+                    Console.WriteLine(result);
+                    Console.ReadKey();
                     if(playerOne.Score >= playerTwo.totalShips)
                     {
                         break;
@@ -108,7 +113,11 @@ namespace BattleShip
                 {
                     DisplayTitle();
                     playerOneBoard.DisplayBoard();
-                    playerTwo.Fire(playerOneBoard);
+                    string result = playerTwo.Fire(playerOneBoard);
+                    DisplayTitle();
+                    playerOneBoard.DisplayBoard();
+                    Console.WriteLine(result);
+                    Console.ReadKey();
                     if (playerTwo.Score >= playerOne.totalShips)
                     {
                         break;
