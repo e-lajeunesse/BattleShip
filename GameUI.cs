@@ -22,23 +22,10 @@ namespace BattleShip
 
             foreach( Ship playerShip in playerOne.ShipList)
             {
-                bool validEntry = false;
-                while(!validEntry)
-                {
-                    Console.WriteLine($"How would you like to place your {playerShip.Name}, enter 1 or 2" +
-                        $"1. Horizontally" +
-                        $"2. Vertically");
-                    string direction = Console.ReadLine();
-                    if (direction == "1" || direction == "2")
-                    {
-                        validEntry = true;
-                    }
-                }
                 playerOne.PlaceShip(playerShip, playerOneBoard);     
                 DisplayTitle();
                 playerOneBoard.DisplayBoard();
-            }       
-                                   
+            }                                          
             Console.ReadKey();
             foreach (Point point in playerOneBoard.board)
             {
@@ -56,8 +43,7 @@ namespace BattleShip
                 playerTwo.PlaceShip(playerShip, playerTwoBoard);
                 DisplayTitle();
                 playerTwoBoard.DisplayBoard();
-            }
-                       
+            }                       
             Console.ReadKey();
             foreach (Point point in playerTwoBoard.board)
             {
@@ -68,7 +54,7 @@ namespace BattleShip
             for(int i=0; i<5; i++)
             {
                 //Player One fires on Player Two's Board
-                for (int j=0; j<6; j++)
+                for (int j=0; j<5; j++)
                 {
                     DisplayTitle();
                     playerTwoBoard.DisplayBoard();
@@ -95,7 +81,7 @@ namespace BattleShip
                 Console.ReadKey();
 
                 //Player Two fires on Player One's Board
-                for (int j = 0; j < 6; j++)
+                for (int j = 0; j < 5; j++)
                 {
                     DisplayTitle();
                     playerOneBoard.DisplayBoard();
@@ -161,7 +147,7 @@ namespace BattleShip
             DisplayTitle();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Thank you for playing Battleship!");
-            Console.WriteLine("The Winner is: ");
+            Console.Write("The Winner is: ");
             if (playerOne.Score > playerTwo.Score)
             {
                 Console.WriteLine("Player 1!");
@@ -182,4 +168,3 @@ namespace BattleShip
 }
 
     
-// To DO: update code so ships can be placed vertically

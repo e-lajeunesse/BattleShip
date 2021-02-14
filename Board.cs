@@ -15,8 +15,7 @@ namespace BattleShip
 
 
 
-        // Method to initialize board with points
-        // needed separate method since everytime you use DisplayBoard it would change all points back to '.'
+        // Method to initialize board with points        
         public void FillBoard()
         {
             for (int i = 0; i < board.GetLength(0); i++)
@@ -28,7 +27,6 @@ namespace BattleShip
                 }
             }
         }
-
 
         //Method to display board to console
         public void DisplayBoard()
