@@ -19,26 +19,13 @@ namespace BattleShip
             DisplayTitle();             
             playerOneBoard.FillBoard();
             playerOneBoard.DisplayBoard();
-            
-            playerOne.PlaceShip(playerOne.shipOne, playerOneBoard);     
-            DisplayTitle();
-            playerOneBoard.DisplayBoard();
-            
-            playerOne.PlaceShip(playerOne.shipTwo, playerOneBoard);
-            DisplayTitle();
-            playerOneBoard.DisplayBoard();
 
-            playerOne.PlaceShip(playerOne.shipThree, playerOneBoard);
-            DisplayTitle();
-            playerOneBoard.DisplayBoard();
-
-            playerOne.PlaceShip(playerOne.shipFour, playerOneBoard);
-            DisplayTitle();
-            playerOneBoard.DisplayBoard();
-
-            playerOne.PlaceShip(playerOne.shipFive, playerOneBoard);
-            DisplayTitle();
-            playerOneBoard.DisplayBoard();
+            foreach( Ship playerShip in playerOne.ShipList)
+            {
+                playerOne.PlaceShip(playerShip, playerOneBoard);     
+                DisplayTitle();
+                playerOneBoard.DisplayBoard();
+            }                                          
             Console.ReadKey();
             foreach (Point point in playerOneBoard.board)
             {
@@ -50,27 +37,13 @@ namespace BattleShip
             DisplayTitle();
             playerTwoBoard.FillBoard();
             playerTwoBoard.DisplayBoard();
-            
-            playerTwo.PlaceShip(playerTwo.shipOne, playerTwoBoard);
-            DisplayTitle();
-            playerTwoBoard.DisplayBoard();
-            
-            playerTwo.PlaceShip(playerTwo.shipTwo, playerTwoBoard);
-            DisplayTitle();
-            playerTwoBoard.DisplayBoard();
 
-            playerTwo.PlaceShip(playerTwo.shipThree, playerTwoBoard);
-            DisplayTitle();
-            playerTwoBoard.DisplayBoard();
-
-            playerTwo.PlaceShip(playerTwo.shipFour, playerTwoBoard);
-            DisplayTitle();
-            playerTwoBoard.DisplayBoard();
-
-            playerTwo.PlaceShip(playerTwo.shipFive, playerTwoBoard);
-            DisplayTitle();
-            playerTwoBoard.DisplayBoard();
-
+            foreach(Ship playerShip in playerTwo.ShipList)
+            {
+                playerTwo.PlaceShip(playerShip, playerTwoBoard);
+                DisplayTitle();
+                playerTwoBoard.DisplayBoard();
+            }                       
             Console.ReadKey();
             foreach (Point point in playerTwoBoard.board)
             {
@@ -81,11 +54,15 @@ namespace BattleShip
             for(int i=0; i<5; i++)
             {
                 //Player One fires on Player Two's Board
-                for (int j=0; j<6; j++)
+                for (int j=0; j<5; j++)
                 {
                     DisplayTitle();
                     playerTwoBoard.DisplayBoard();
-                    playerOne.Fire(playerTwoBoard);
+                    string result = playerOne.Fire(playerTwoBoard);
+                    DisplayTitle();
+                    playerTwoBoard.DisplayBoard();
+                    Console.WriteLine(result);
+                    Console.ReadKey();
                     if(playerOne.Score >= playerTwo.totalShips)
                     {
                         break;
@@ -104,11 +81,15 @@ namespace BattleShip
                 Console.ReadKey();
 
                 //Player Two fires on Player One's Board
-                for (int j = 0; j < 6; j++)
+                for (int j = 0; j < 5; j++)
                 {
                     DisplayTitle();
                     playerOneBoard.DisplayBoard();
-                    playerTwo.Fire(playerOneBoard);
+                    string result = playerTwo.Fire(playerOneBoard);
+                    DisplayTitle();
+                    playerOneBoard.DisplayBoard();
+                    Console.WriteLine(result);
+                    Console.ReadKey();
                     if (playerTwo.Score >= playerOne.totalShips)
                     {
                         break;
@@ -166,7 +147,7 @@ namespace BattleShip
             DisplayTitle();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Thank you for playing Battleship!");
-            Console.WriteLine("The Winner is: ");
+            Console.Write("The Winner is: ");
             if (playerOne.Score > playerTwo.Score)
             {
                 Console.WriteLine("Player 1!");

@@ -6,15 +6,14 @@ namespace BattleShip
 {
     public class Player
     {
-        public int totalShips { get; } = 15;
+        public int totalShips { get; } = 5;
         public int Score { get; set; } = 0;
-        public string Name { get;set;}
+        public string Name { get; }
 
-        public Ship shipOne { get; }
-        public Ship shipTwo { get; }
-        public Ship shipThree { get; }
-        public Ship shipFour { get; }
-        public Ship shipFive { get; }
+        public List<Ship> ShipList { get; } = new List<Ship> { new PatrolShip(), new PatrolShip(),
+            new Battleship(), new Battleship(),new Carrier() };
+        
+
 
         public Player(string name)
         {
@@ -22,50 +21,101 @@ namespace BattleShip
         }
 
 
+
+
         // Method for player to place ships on their own board
         public void PlaceShip(Ship playerShip, Board playerBoard)
         {
+            bool validDirection = false;
             bool shipPlacedSuccessfully = false;
-            while (!shipPlacedSuccessfully)
+            string direction = null;
+            
+            while (!validDirection)
             {
-                Console.WriteLine($"\n{Name} Enter where you want to place your ship: ");
-                string playerChoice = Console.ReadLine();
-                if (!ShipChoiceOnBoard(playerChoice))
+                direction = "";
+                Console.Write($"{Name}, how would you like to place your {playerShip.Name}, enter 1 for horizontally or " +
+                    $"2 for vertically: ");
+                direction += Console.ReadLine();
+                if (direction == "1" || direction == "2")
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("INVALID ENTRY");
+                    validDirection = true;
                 }
                 else
                 {
+                    Console.WriteLine("  That's not a valid entry");
+                }
+            }
+
+
+            while (!shipPlacedSuccessfully)
+            {
+                if (direction == "1")
+                {
+                    Console.Write($"{Name} Enter where you want to place your {playerShip.Name}: ");
+                    string playerChoice = Console.ReadLine();                
+
+                    if (!HorizontalShipChoiceOnBoard(playerChoice, playerShip.Length))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("INVALID ENTRY");
+                        continue;
+                    }
                     List<int> coordinates = ConvertChoiceToCoordinate(playerChoice);
-                    if (playerBoard.board[coordinates[0], coordinates[1]].HasShip 
-                        || playerBoard.board[coordinates[0], coordinates[1]+1].HasShip
-                        || playerBoard.board[coordinates[0], coordinates[1]+2].HasShip)
+                    if (ShipChoiceHasShip(coordinates, playerShip.Length, playerBoard, direction))
                     {
                         Console.WriteLine("There's already a ship there!");
                     }
                     else
                     {
-                        playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " S ";
-                        playerBoard.board[coordinates[0], coordinates[1]].HasShip = true;
-                        
-                        playerBoard.board[coordinates[0], coordinates[1]+1].DisplayString = " S ";
-                        playerBoard.board[coordinates[0], coordinates[1]+1].HasShip = true;
+                        for (int i = 0; i < playerShip.Length; i++)
+                        {
+                            playerBoard.board[coordinates[0], coordinates[1]+i].DisplayString = " S ";
+                            playerBoard.board[coordinates[0], coordinates[1]+i].HasShip = true;
+                            playerShip.Locations.Add(new List<int> { coordinates[0], coordinates[1] + i });
+                            ValueTuple<int, int> shipLocation = (coordinates[0], coordinates[1] + i);
+                            playerBoard.ShipTracker[shipLocation] = playerShip;
+                        }
+                        shipPlacedSuccessfully = true;                    
+                    }
+                }
 
-                        playerBoard.board[coordinates[0], coordinates[1] + 2].DisplayString = " S ";
-                        playerBoard.board[coordinates[0], coordinates[1] + 2].HasShip = true;
+                else if (direction == "2")
+                {
+                    Console.Write($"{Name} Enter where you want to place your {playerShip.Name}: ");
+                    string playerChoice = Console.ReadLine();
 
+                    if (!VerticalShipChoiceOnBoard(playerChoice, playerShip.Length))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("INVALID ENTRY");
+                        continue;
+                    }
+                    List<int> coordinates = ConvertChoiceToCoordinate(playerChoice);
+                    if (ShipChoiceHasShip(coordinates, playerShip.Length, playerBoard, direction))
+                    {
+                        Console.WriteLine("There's already a ship there!");
+                    }
+                    else
+                    {
+                        for (int i = 0; i < playerShip.Length; i++)
+                        {
+                            playerBoard.board[coordinates[0] + i, coordinates[1]].DisplayString = " S ";
+                            playerBoard.board[coordinates[0] + i, coordinates[1]].HasShip = true;
+                            playerShip.Locations.Add(new List<int> { coordinates[0] + i, coordinates[1] });
+                            ValueTuple<int, int> shipLocation = (coordinates[0] + i, coordinates[1]);
+                            playerBoard.ShipTracker[shipLocation] = playerShip;
+                        }
                         shipPlacedSuccessfully = true;
-                        Console.WriteLine($"Ship {playerShip} placed at {playerChoice}");                    
                     }
                 }
             }
         }
 
         // Method for player to fire on opponents board
-        public void Fire(Board playerBoard)
+        public string Fire(Board playerBoard)
         {
             bool validFireGuess = false;
+            string result = "";
             while (!validFireGuess)
             {
                 Console.WriteLine($"\n {Name} Enter the location you want to fire at: ");
@@ -79,24 +129,37 @@ namespace BattleShip
                 else
                 {
                     List<int> coordinates = ConvertChoiceToCoordinate(playerGuess);
+                    ValueTuple<int, int> shipLocation = (coordinates[0], coordinates[1]);
                     if (playerBoard.board[coordinates[0], coordinates[1]].HasShip)
                     {
-                        Console.WriteLine("You've hit the enemies ship!");
                         playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " H ";
-                        playerBoard.board[coordinates[0], coordinates[1]].HasShip = false;
-                        Score++;
+                        playerBoard.board[coordinates[0], coordinates[1]].HasShip = false;                        
+                        Ship hitShip = playerBoard.ShipTracker[shipLocation];
+                        if (hitShip.IsSunk(playerBoard))
+                        {
+                            
+                            result =  $"You've sunk the enemies {hitShip.Name}!";                            
+                            Score++;
+                        }
+                        else
+                        {
+                            result = $"You've hit the enemies {hitShip.Name}!";                             
+                        }                        
                     }
                     else
                     {
-                        Console.WriteLine("You Missed!");
-                        if(!(playerBoard.board[coordinates[0], coordinates[1]].DisplayString == " H "))
+                        result = "You Missed!";
+                        if (!(playerBoard.board[coordinates[0], coordinates[1]].DisplayString == " H "))
                         {
                             playerBoard.board[coordinates[0], coordinates[1]].DisplayString = " M ";
                         }
                     }
                     validFireGuess = true;
+                    
                 }
             }
+            return result;
+            
         }
 
         //Converts players choice to coordinates on board, i.e A1 converts to (1,0)
@@ -110,11 +173,11 @@ namespace BattleShip
             return coordinates;
         }
 
-        // Checks if a players entry on the game board
+        // Checks if a players entry for firing is on the game board
         public bool ChoiceOnBoard(string choice)
         {
             List<char> validLetters = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
-            List<int> validNums = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            List<char> validNums = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
             if (choice.Length != 2)
             {
                 return false;
@@ -123,7 +186,7 @@ namespace BattleShip
             {
                 return false;
             }
-            else if (!validNums.Contains(int.Parse(choice[1].ToString())))
+            else if (!validNums.Contains(choice[1]))
             {
                 return false;
             }
@@ -133,26 +196,80 @@ namespace BattleShip
             }
         }
 
-        // Checks if a players entry on the game board
-        public bool ShipChoiceOnBoard(string choice)
+        // Checks if a players entry for placing ship horizontally is on the game board
+        public bool HorizontalShipChoiceOnBoard(string choice, int shipLength)
         {
-            List<char> validLetters = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
-            List<int> validNums = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            List<char> allValidLetters = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+            List<char> allValidNums = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
+            List<char> validLettersForShip = allValidLetters.GetRange(0, allValidLetters.Count - shipLength + 1);
             if (choice.Length != 2)
             {
                 return false;
             }
-            else if (!validLetters.Contains(choice[0]))
+            else if (!validLettersForShip.Contains(choice[0]))
             {
                 return false;
             }
-            else if (!validNums.Contains(int.Parse(choice[1].ToString())))
+            else if (!allValidNums.Contains(choice[1]))
             {
                 return false;
             }
             else
             {
                 return true;
+            }
+        }
+
+        // Checks if a players entry for placing ship vertically is on the game board
+        public bool VerticalShipChoiceOnBoard(string choice, int shipLength)
+        {
+            List<char> allValidLetters = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+            List<char> allValidNums = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            
+            List<char> validNumsForShip = allValidNums.GetRange(0, allValidNums.Count - shipLength + 1);
+            if (choice.Length != 2)
+            {
+                return false;
+            }
+            else if (!allValidLetters.Contains(choice[0]))
+            {
+                return false;
+            }
+            else if (!validNumsForShip.Contains(choice[1]))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        //Checks if players choice for placing a ship already contains a ship 
+        public bool ShipChoiceHasShip(List<int> coordinates, int shipLength, Board playerBoard, string direction)
+        {
+            if (direction == "1")
+            {
+                for (int i = 0; i < shipLength; i++)
+                {
+                    if (playerBoard.board[coordinates[0], coordinates[1] + i].HasShip)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                for (int i = 0; i < shipLength; i++)
+                {
+                    if (playerBoard.board[coordinates[0]+i, coordinates[1]].HasShip)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
         }
     }

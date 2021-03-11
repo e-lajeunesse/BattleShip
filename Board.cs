@@ -10,9 +10,12 @@ namespace BattleShip
         public string letters = "  A  B  C  D  E  F  G  H  I  J";
         public Point[,] board = new Point[10, 10];
 
-        
-        // Method to initialize board with points
-        // needed separate method since everytime you use DisplayBoard it would change all points back to '.'
+        public Dictionary<ValueTuple<int,int>, Ship> ShipTracker { get; set; } = 
+            new Dictionary<ValueTuple<int,int>, Ship>();
+
+
+
+        // Method to initialize board with points        
         public void FillBoard()
         {
             for (int i = 0; i < board.GetLength(0); i++)
@@ -24,7 +27,6 @@ namespace BattleShip
                 }
             }
         }
-
 
         //Method to display board to console
         public void DisplayBoard()
